@@ -1,1 +1,1 @@
-# hcl-eureka
+# team-eureka

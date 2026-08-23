@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface QuizItem {
   id: string;
@@ -58,6 +58,23 @@ export default function CheckpointQuiz() {
     }
   };
 
+  // NEW: Keyboard navigation listener
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (['1', '2', '3', '4'].includes(e.key)) {
+        const index = parseInt(e.key) - 1;
+        if (index < currentQuestion.options.length) {
+          setSelectedOption(index);
+        }
+      } else if (e.key === 'Enter' && selectedOption !== null) {
+        handleNext();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [currentQuestion, selectedOption, currentIndex]);
+
   if (isSubmitting) {
     return (
       <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-12 text-center flex flex-col items-center animate-in fade-in zoom-in">
@@ -89,19 +106,25 @@ export default function CheckpointQuiz() {
             <button
               key={idx}
               onClick={() => setSelectedOption(idx)}
-              className={`w-full text-left px-6 py-4 rounded-xl border text-sm transition-all ${
+              className={`w-full text-left px-6 py-4 rounded-xl border text-sm transition-all flex items-center gap-4 ${
                 selectedOption === idx
                   ? 'border-black bg-black text-white'
                   : 'border-gray-200 hover:border-gray-400 text-gray-700 bg-white'
               }`}
             >
+              <span className={`flex items-center justify-center w-6 h-6 rounded-md text-xs font-bold ${
+                selectedOption === idx ? 'bg-white text-black' : 'bg-gray-100 text-gray-500'
+              }`}>
+                {idx + 1}
+              </span>
               {option}
             </button>
           ))}
         </div>
       </div>
 
-      <div className="p-6 border-t border-gray-100 bg-gray-50 flex justify-end">
+      <div className="p-6 border-t border-gray-100 bg-gray-50 flex justify-between items-center">
+        <span className="text-xs text-gray-400 font-medium">Tip: Use 1-4 and Enter keys to navigate</span>
         <button
           onClick={handleNext}
           disabled={selectedOption === null}

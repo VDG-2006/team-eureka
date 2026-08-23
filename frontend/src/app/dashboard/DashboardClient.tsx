@@ -3,6 +3,7 @@
 import React from 'react';
 import InteractiveDAG from '@/components/graph/InteractiveDAG';
 import NodeDrawer from '@/components/graph/NodeDrawer';
+import DevTools from '@/components/ui/DevTools';
 import { useStore } from '@/lib/store';
 
 export default function DashboardClient() {
@@ -15,8 +16,11 @@ export default function DashboardClient() {
         <InteractiveDAG onNodeSelect={(id) => setSelectedNodeId(id)} />
       </div>
       
-      {/* The drawer will float above the 3D graph when a node is clicked */}
+      {/* Detail Drawer Sidebar */}
       <NodeDrawer nodeId={selectedNodeId} onClose={() => setSelectedNodeId(null)} />
+
+      {/* Hidden Dev Tools (Ctrl+Shift+X) */}
+      <DevTools />
     </>
   );
 }

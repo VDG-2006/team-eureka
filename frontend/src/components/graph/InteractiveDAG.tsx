@@ -36,11 +36,18 @@ function SkillNode({ node, onClick }: { node: NodeData; onClick: (id: string) =>
   const getColor = () => {
     switch (node.status) {
       case 'completed': return '#000000';
-      case 'in_progress': return '#f59e0b';
-      case 'unlocked': return '#3b82f6';
-      case 'locked': return '#d1d5db';
+      case 'in_progress': return '#f59e0b'; // Amber
+      case 'unlocked': return '#3b82f6';   // Blue
+      case 'locked': return '#d1d5db';     // Gray
       default: return '#d1d5db';
     }
+  };
+
+  // NEW: Heatmap Glow Effect
+  const getEmissive = () => {
+    if (node.status === 'in_progress') return '#f59e0b';
+    if (node.status === 'completed') return '#10b981'; // Subtle green heat
+    return '#000000';
   };
 
   return (
@@ -55,16 +62,17 @@ function SkillNode({ node, onClick }: { node: NodeData; onClick: (id: string) =>
           e.stopPropagation();
           setHovered(true);
         }}
-        onPointerOut={(e) => {
+        onPointerOut={() => {
           setHovered(false);
         }}
       >
         <sphereGeometry args={[0.6, 32, 32]} />
         <meshStandardMaterial 
           color={getColor()} 
-          emissive={node.status === 'in_progress' ? '#f59e0b' : '#000000'}
-          emissiveIntensity={0.5}
+          emissive={getEmissive()}
+          emissiveIntensity={node.status === 'in_progress' ? 1.5 : (node.status === 'completed' ? 0.4 : 0)}
           wireframe={node.status === 'locked'}
+          toneMapped={false}
         />
       </mesh>
       

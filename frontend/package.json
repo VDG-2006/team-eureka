@@ -12,6 +12,7 @@
     "@clerk/nextjs": "latest",
     "@react-three/drei": "latest",
     "@react-three/fiber": "latest",
+    "@tailwindcss/postcss": "^4.3.3",
     "clsx": "latest",
     "next": "latest",
     "react": "latest",

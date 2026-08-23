@@ -1,10 +1,8 @@
-// src/types/index.ts
-
 export type AuraTier = 'Spark' | 'Ember' | 'Flame' | 'Blaze' | 'Aurora';
 export type NodeStatus = 'locked' | 'unlocked' | 'in_progress' | 'completed';
 
 export interface LearnerProfile {
-  id: string; // Clerk user ID
+  id: string;
   skill_vector: Record<string, number>;
   completed_nodes: string[];
   aura_points: number;
@@ -37,6 +35,6 @@ export interface AuraEvent {
   node_id: string;
   type: 'checkpoint_pass' | 'milestone_complete' | 'path_complete' | 'streak_bonus';
   points_awarded: number;
-  breakdown: any; // JSON object for UI toasts
+  breakdown: any;
   created_at: string;
 }

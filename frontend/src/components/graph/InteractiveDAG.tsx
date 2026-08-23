@@ -4,6 +4,7 @@ import React, { useRef, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, Text, Html, useCursor } from '@react-three/drei';
 import * as THREE from 'three';
+import { useStore } from '@/lib/store'; // 1. Import our global store
 
 interface NodeData {
   id: string;
@@ -36,17 +37,16 @@ function SkillNode({ node, onClick }: { node: NodeData; onClick: (id: string) =>
   const getColor = () => {
     switch (node.status) {
       case 'completed': return '#000000';
-      case 'in_progress': return '#f59e0b'; // Amber
-      case 'unlocked': return '#3b82f6';   // Blue
-      case 'locked': return '#d1d5db';     // Gray
+      case 'in_progress': return '#f59e0b';
+      case 'unlocked': return '#3b82f6';
+      case 'locked': return '#d1d5db';
       default: return '#d1d5db';
     }
   };
 
-  // NEW: Heatmap Glow Effect
   const getEmissive = () => {
     if (node.status === 'in_progress') return '#f59e0b';
-    if (node.status === 'completed') return '#10b981'; // Subtle green heat
+    if (node.status === 'completed') return '#10b981';
     return '#000000';
   };
 
@@ -99,7 +99,11 @@ function SkillNode({ node, onClick }: { node: NodeData; onClick: (id: string) =>
   );
 }
 
-export default function InteractiveDAG({ onNodeSelect }: { onNodeSelect: (id: string) => void }) {
+// 2. Remove the props entirely! The component manages itself now.
+export default function InteractiveDAG() {
+  // 3. Grab the setter directly from Zustand
+  const setSelectedNodeId = useStore((state) => state.setSelectedNodeId);
+
   return (
     <div className="w-full h-full cursor-grab active:cursor-grabbing">
       <Canvas camera={{ position: [0, 0, 10], fov: 50 }}>
@@ -107,7 +111,7 @@ export default function InteractiveDAG({ onNodeSelect }: { onNodeSelect: (id: st
         <pointLight position={[10, 10, 10]} intensity={1} />
         
         {mockNodes.map((node) => (
-          <SkillNode key={node.id} node={node} onClick={onNodeSelect} />
+          <SkillNode key={node.id} node={node} onClick={setSelectedNodeId} />
         ))}
 
         <OrbitControls 

@@ -13,7 +13,8 @@ export default function DashboardClient() {
   return (
     <>
       <div className="absolute inset-0 z-0 bg-[#f3f3f1]">
-        <InteractiveDAG onNodeSelect={(id) => setSelectedNodeId(id)} />
+        {/* We simply render the DAG without passing props now */}
+        <InteractiveDAG />
       </div>
       
       {/* Detail Drawer Sidebar */}

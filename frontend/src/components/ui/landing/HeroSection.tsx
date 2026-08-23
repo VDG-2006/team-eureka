@@ -1,5 +1,7 @@
 import React from 'react';
 import { SignInButton } from '@clerk/nextjs';
+import AmbientGraph3D from '@/components/graph/AmbientGraph3D'; // 1. Imported the 3D Graph
+import TabbedFeatures from '@/components/ui/landing/TabbedFeatures'; // 2. Imported the Tabbed Features
 
 export default function HeroSection() {
   return (
@@ -25,8 +27,10 @@ export default function HeroSection() {
       </nav>
 
       <main className="relative flex-1 flex flex-col items-center justify-center text-center px-6 md:px-12 pt-20 pb-32">
-        <div className="absolute inset-0 z-0 overflow-hidden opacity-30 pointer-events-none flex items-center justify-center">
-             <div className="w-[500px] h-[500px] border-[1px] border-dashed border-gray-400 rounded-full animate-[spin_60s_linear_infinite]" />
+        
+        {/* 3. Replaced the old dashed circle with the real 3D component */}
+        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none flex items-center justify-center">
+             <AmbientGraph3D /> 
         </div>
 
         <div className="relative z-10 max-w-4xl mx-auto">
@@ -47,7 +51,7 @@ export default function HeroSection() {
         </div>
       </main>
 
-      <section className="bg-white py-12 border-y border-gray-200 z-10">
+      <section className="bg-white py-12 border-y border-gray-200 z-10 relative">
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center text-center divide-y md:divide-y-0 md:divide-x divide-gray-200">
           <div className="py-6 md:py-0 px-8 w-full">
             <div className="text-4xl font-bold mb-2 tracking-tight">Adaptive</div>
@@ -63,6 +67,17 @@ export default function HeroSection() {
           </div>
         </div>
       </section>
+
+      {/* 4. Added the Tabbed Features section right below the stats */}
+      <section id="features" className="bg-[#f3f3f1] py-24 px-6 z-10 relative">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-4xl md:text-5xl font-bold mb-16 text-center tracking-tight">
+            Master your skills. <br/> You deserve a path that adapts.
+          </h2>
+          <TabbedFeatures />
+        </div>
+      </section>
+      
     </div>
   );
 }
